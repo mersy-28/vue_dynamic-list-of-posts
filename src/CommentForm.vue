@@ -5,15 +5,15 @@
       <div class="control">
         <input
           class="input"
-          v-model="form.authorName"
-          :class="{ 'is-danger': errors.authorName }"
+          v-model="form.name"
+          :class="{ 'is-danger': errors.name }"
           type="text"
           placeholder="Your name"
           required
         />
       </div>
-      <p v-if="errors.authorName" class="help is-danger">
-        {{ errors.authorName }}
+      <p v-if="errors.name" class="help is-danger">
+        {{ errors.name }}
       </p>
     </div>
     <div class="field">
@@ -21,15 +21,15 @@
       <div class="control">
         <input
           class="input"
-          v-model="form.authorEmail"
-          :class="{ 'is-danger': errors.authorEmail }"
+          v-model="form.email"
+          :class="{ 'is-danger': errors.email }"
           type="email"
           placeholder="Your email"
           required
         />
       </div>
-      <p v-if="errors.authorEmail" class="help is-danger">
-        {{ errors.authorEmail }}
+      <p v-if="errors.email" class="help is-danger">
+        {{ errors.email }}
       </p>
     </div>
     <div class="field">
@@ -37,13 +37,13 @@
       <div class="control">
         <textarea
           class="textarea"
-          v-model="form.text"
-          :class="{ 'is-danger': errors.text }"
+          v-model="form.body"
+          :class="{ 'is-danger': errors.body }"
           placeholder="Write your comment"
           required
         ></textarea>
       </div>
-      <p v-if="errors.text" class="help is-danger">{{ errors.text }}</p>
+      <p v-if="errors.body" class="help is-danger">{{ errors.body }}</p>
     </div>
     <div class="field is-grouped">
       <div class="control">
@@ -80,57 +80,62 @@ export default {
   data() {
     return {
       form: {
-        authorName: '',
-        authorEmail: '',
-        text: '',
+        name: "",
+        email: "",
+        body: "",
       },
       errors: {},
       loading: false,
-      error: '',
+      error: "",
     };
   },
   methods: {
     validate() {
       this.errors = {};
-      if (!this.form.authorName) this.errors.authorName = 'Name is required';
-      if (!this.form.authorEmail) this.errors.authorEmail = 'Email is required';
-      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.form.authorEmail)) this.errors.authorEmail = 'Invalid email';
-      if (!this.form.text) this.errors.text = 'Comment is required';
+      if (!this.form.name) this.errors.name = "Name is required";
+      if (!this.form.email) this.errors.email = "Email is required";
+      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.form.email))
+        this.errors.email = "Invalid email";
+      if (!this.form.body) this.errors.body = "Comment is required";
       return Object.keys(this.errors).length === 0;
-      },
-      async handleSubmit() {
-        if (!this.validate()) return;
-        this.loading = true;
-        this.error = '';
-        try {
-          const newComment = await addComment(this.postId, { ...this.form });
-          this.$emit('submitted', newComment);
-          // Keep name/email, clear only comment text
-          this.form.text = '';
-          this.errors.text = '';
-        } catch (err) {
-          this.error = err.message || 'Failed to add comment';
-        } finally {
-          this.loading = false;
-        }
-      },
-      handleClear() {
-        this.form.authorName = '';
-        this.form.authorEmail = '';
-        this.form.text = '';
-        this.errors = {};
-        this.error = '';
-      },
     },
-    watch: {
-      'form.authorName'(val) { if (this.errors.authorName) this.errors.authorName = ''; },
-      'form.authorEmail'(val) { if (this.errors.authorEmail) this.errors.authorEmail = ''; },
-      'form.text'(val) { if (this.errors.text) this.errors.text = ''; },
+    async handleSubmit() {
+      if (!this.validate()) return;
+      this.loading = true;
+      this.error = "";
+      try {
+        const newComment = await addComment(this.postId, {
+          name: this.form.name,
+          email: this.form.email,
+          body: this.form.body,
+        });
+        this.$emit("submitted", newComment);
+        // Keep name/email, clear only comment body
+        this.form.body = "";
+        this.errors.body = "";
+      } catch (err) {
+        this.error = err.message || "Failed to add comment";
+      } finally {
+        this.loading = false;
+      }
     },
-  };
+    handleClear() {
+      this.form.name = "";
+      this.form.email = "";
+      this.form.body = "";
+      this.errors = {};
+      this.error = "";
     },
-    "form.text"(val) {
-      if (this.errors.text) this.errors.text = "";
+  },
+  watch: {
+    "form.name"(val) {
+      if (this.errors.name) this.errors.name = "";
+    },
+    "form.email"(val) {
+      if (this.errors.email) this.errors.email = "";
+    },
+    "form.body"(val) {
+      if (this.errors.body) this.errors.body = "";
     },
   },
 };

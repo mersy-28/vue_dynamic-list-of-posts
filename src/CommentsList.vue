@@ -12,9 +12,9 @@
     <div v-else>
       <ul>
         <li v-for="comment in comments" :key="comment.id" class="box">
-          <strong>{{ comment.authorName }}</strong>
-          <span>({{ comment.authorEmail }})</span>
-          <p>{{ comment.text }}</p>
+          <strong>{{ comment.name }}</strong>
+          <span>({{ comment.email }})</span>
+          <p>{{ comment.body }}</p>
           <button
             class="button is-small is-danger"
             @click="handleDelete(comment)"
@@ -81,7 +81,12 @@ export default {
       }
     },
     handleAddComment(newComment) {
-      this.comments.push(newComment);
+      this.comments.push({
+        id: newComment.id,
+        name: newComment.name,
+        email: newComment.email,
+        body: newComment.body,
+      });
       this.showForm = false;
       this.error = "";
     },

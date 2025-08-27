@@ -11,12 +11,12 @@ export async function fetchPosts(userId) {
   }
 }
 
-export async function createPost(userId, postData) {
+export async function createPost(postData) {
   try {
-    const res = await fetch(`${API_BASE}/users/${userId}/posts`, {
+    const res = await fetch(`${API_BASE}/users/${postData.userId}/posts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(postData),
+      body: JSON.stringify({ title: postData.title, body: postData.body }),
     });
     if (!res.ok) throw new Error('Failed to create post');
     return await res.json();

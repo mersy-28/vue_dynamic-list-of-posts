@@ -92,10 +92,9 @@ export default {
       this.sidebarLoading = true;
       this.sidebarError = "";
       try {
-        // API expects { userId, title, body }
         const newPost = await (
           await import("./api.js")
-        ).createPost(this.userId, postData);
+        ).createPost({ userId: this.userId, ...postData });
         this.posts.push(newPost);
         this.selectedPost = newPost;
         this.sidebarMode = "view";
