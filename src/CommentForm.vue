@@ -73,31 +73,30 @@
 <script>
 import { addComment } from "./api.js";
 export default {
-  export default {
-    name: "CommentForm",
-    props: {
-      postId: Number,
-    },
-    data() {
-      return {
-        form: {
-          authorName: '',
-          authorEmail: '',
-          text: '',
-        },
-        errors: {},
-        loading: false,
-        error: '',
-      };
-    },
-    methods: {
-      validate() {
-        this.errors = {};
-        if (!this.form.authorName) this.errors.authorName = 'Name is required';
-        if (!this.form.authorEmail) this.errors.authorEmail = 'Email is required';
-        else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.form.authorEmail)) this.errors.authorEmail = 'Invalid email';
-        if (!this.form.text) this.errors.text = 'Comment is required';
-        return Object.keys(this.errors).length === 0;
+  name: "CommentForm",
+  props: {
+    postId: Number,
+  },
+  data() {
+    return {
+      form: {
+        authorName: '',
+        authorEmail: '',
+        text: '',
+      },
+      errors: {},
+      loading: false,
+      error: '',
+    };
+  },
+  methods: {
+    validate() {
+      this.errors = {};
+      if (!this.form.authorName) this.errors.authorName = 'Name is required';
+      if (!this.form.authorEmail) this.errors.authorEmail = 'Email is required';
+      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.form.authorEmail)) this.errors.authorEmail = 'Invalid email';
+      if (!this.form.text) this.errors.text = 'Comment is required';
+      return Object.keys(this.errors).length === 0;
       },
       async handleSubmit() {
         if (!this.validate()) return;

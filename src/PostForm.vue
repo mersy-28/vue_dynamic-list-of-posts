@@ -15,17 +15,17 @@
       <p v-if="errors.title" class="help is-danger">{{ errors.title }}</p>
     </div>
     <div class="field">
-      <label class="label">Content</label>
+      <label class="label">Body</label>
       <div class="control">
         <textarea
           class="textarea"
-          v-model="form.content"
-          :class="{ 'is-danger': errors.content }"
-          placeholder="Post content"
+          v-model="form.body"
+          :class="{ 'is-danger': errors.body }"
+          placeholder="Post body"
           required
         ></textarea>
       </div>
-      <p v-if="errors.content" class="help is-danger">{{ errors.content }}</p>
+      <p v-if="errors.body" class="help is-danger">{{ errors.body }}</p>
     </div>
     <div class="field is-grouped">
       <div class="control">
@@ -60,7 +60,7 @@ export default {
     return {
       form: {
         title: this.post?.title || "",
-        content: this.post?.content || "",
+        body: this.post?.body || "",
       },
       errors: {},
     };
@@ -69,7 +69,7 @@ export default {
     validate() {
       this.errors = {};
       if (!this.form.title) this.errors.title = "Title is required";
-      if (!this.form.content) this.errors.content = "Content is required";
+      if (!this.form.body) this.errors.body = "Body is required";
       return Object.keys(this.errors).length === 0;
     },
     handleSubmit() {
@@ -82,8 +82,8 @@ export default {
     "form.title"(val) {
       if (this.errors.title) this.errors.title = "";
     },
-    "form.content"(val) {
-      if (this.errors.content) this.errors.content = "";
+    "form.body"(val) {
+      if (this.errors.body) this.errors.body = "";
     },
   },
 };

@@ -92,14 +92,14 @@ export default {
       this.sidebarLoading = true;
       this.sidebarError = "";
       try {
-        const newPost =
-          (await this.$options.components.Sidebar.options.components.PostForm
-            .options.props.mode.default) === "create"
-            ? (await import("./api.js")).createPost(this.userId, postData)
-            : null;
+        // API expects { userId, title, body }
+        const newPost = await (
+          await import("./api.js")
+        ).createPost(this.userId, postData);
         this.posts.push(newPost);
         this.selectedPost = newPost;
         this.sidebarMode = "view";
+        this.sidebarOpen = true;
       } catch (err) {
         this.sidebarError = err.message || "Failed to create post";
       } finally {
